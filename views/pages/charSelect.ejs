@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include ../partials/head %>
+	</head>
+	<body>
+		<p> There are currently <span id="numPlayers">no</span> players.</p>
+		<span id="myName"></span><span id="myRole"></span>
+		<div id="party" hidden>
+			<h3>Party Members</h3>
+			<div id="playerList">
+
+			</div>
+		</div>
+		<form id='playerInformation' hidden>
+			Choose a nickname: <input id="playerName" name="playerName"></input><br>
+			Choose a class:
+			<span>
+				<input type="radio" value="warrior" name="playerClass">Warrior</input>
+				<input type="radio" value="archer" name="playerClass">Archer</input>
+				<input type="radio" value="thief" name="playerClass">Thief</input>
+				<input type="radio" value="mage" name="playerClass">Mage</input>
+				<input type="radio" value="cleric" name="playerClass">Cleric</input>
+			</span><br>
+			<button type="submit" value="submit">Go!</button>
+		</form>
+		<br>
+		<div id="classInfo">
+			<div id="warriorInfo">
+				Warriors are known for having a high defense.
+				Stats: 25 HP, 10 MP, 5 STR, 3 DEX, 1 INT, 1 LUK
+			</div>
+			<br>
+			<div id="archerInfo">
+				Archers do more damage than warriors but have lower defense.
+				Stats: 20 HP, 10 MP, 3 STR, 5 Dex, 1 INT, 1 LUK
+			</div>
+			<br>
+			<div id="thiefInfo">
+				Thiefs have a higher chance to crit however they have low defense.
+				Stats: 18 HP, 10 MP, 3 STR, 3 DEX, 1 INT, 3 LUK
+			</div>
+			<br>
+			<div id="mageInfo">
+				Mages are equipped with a variety of spells.
+				Stats: 15 HP, 20 MP, 1 STR, 3 DEX, 5 INT, 1 LUK
+			</div>
+			<br>
+			<div id="clericInfo">
+				Clerics are the life of the party.
+				Stats: 20 HP, 18 MP, 2 STR, 2 DEX, 5 INT, 1 LUK
+			</div>
+		</div>
+	</body>
+</html>
+
+

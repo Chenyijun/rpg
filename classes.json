@@ -1,0 +1,43 @@
+{
+	"class":{
+		"archer":{
+			"stats":{"hp": 20, "mp":10, "str": 3, "dex": 5, "int": 1, "luk": 1 },
+			"skills":{
+				"doubleShot":{"dmg": 5, "mp": 5}
+			}
+		},
+		"warrior":{
+			"stats":{"hp": 25, "mp":10, "str": 5, "dex": 3, "int": 1, "luk": 1},
+			"skills":{
+				"shieldBash":{"dmg":5, "mp":5}
+			}
+		},
+		"thief":{
+			"stats":{"hp": 18, "mp":10, "str":3, "dex": 3, "int": 1, "luk": 3},
+			"skills":{
+				"backStab":{"dmg":5, "mp":5}
+			}
+		},
+		"mage":{
+			"stats":{"hp": 15, "mp":20, "str":1, "dex": 3, "int": 5, "luk": 1}, 
+			"skills":{
+				"fireball":{"dmg": 5, "mp": 5}, 
+				"ice":{"dmg": 3, "mp": 2}
+			}
+		},
+		"cleric":{
+			"stats":{"hp": 20, "mp":18, "str":2, "dex": 2, "int": 5, "luk": 1}, 
+			"skills":{
+				"heal":{"dmg": 5, "mp": 5}
+			}
+		}
+	},
+	"monsters":{
+		"poring":{"hp": 15, "atkMin": 3, "atkMax":5, "exp": 18},
+		"fabre":{"hp": 10, "atkMin": 1, "atkMax": 3, "exp": 10}
+	},
+	"user":{
+		"account":{"username":, "password":},
+		"character":{"name":, "class":, "lvl":1, "exp":0}
+	}
+}
