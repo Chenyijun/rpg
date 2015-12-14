@@ -5,6 +5,12 @@ var bodyParser = require('body-parser');
 
 var express = require('express');
 var app = express();
+//---------Models
+var player = require('./models/player.js')
+var library = require('./models/library.js')
+library.loadJSON(fs);
+
+//--------
 
 // Set the views directory
 app.set('views', __dirname + '/views');

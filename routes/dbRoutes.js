@@ -4,6 +4,7 @@ var mongoModel = require("../models/mongoModel.js")
 // Define the routes for this controller
 exports.init = function(app) {
   app.get('/', index); // essentially the app welcome page
+  app.get('/game', home);
   // The collection parameter maps directly to the mongoDB collection
   app.put('/:collection', doCreate); // CRUD Create
   app.get('/:collection', doRetrieve); // CRUD Retrieve
@@ -14,6 +15,10 @@ exports.init = function(app) {
 // No path:  display instructions for use
 index = function(req, res) {
   res.render('pages/charSelect', {title: 'Login'})
+};
+
+home = function(req, res) {
+  res.render('pages/mainGame', {title: 'Game'})
 };
 
 /********** CRUD Create *******************************************************
@@ -37,7 +42,7 @@ doCreate = function(req, res){
    * properties in the req.body object.
    */
   if (Object.keys(req.body).length == 0) {
-    res.render('message', {title: 'Mongo Demo', obj: "No create message body found"});
+    res.render('pages/message', {title: 'Mongo Demo', obj: "No create message body found"});
     return;
   }
   /*
@@ -84,7 +89,7 @@ doRetrieve = function(req, res){
     req.query,
 		function(modelData) {
 		  if (modelData.length) {
-        res.render('results',{title: 'Mongo Demo', obj: modelData});
+        res.render('pages/results',{title: 'Mongo Demo', obj: modelData});
       } else {
         var message = "No documents with "+JSON.stringify(req.query)+ 
                       " in collection "+req.params.collection+" found.";

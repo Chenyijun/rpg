@@ -2,16 +2,25 @@
 <html>
 	<head>
 		<% include ../partials/head %>
+
 	</head>
 	<body>
-		<p> There are currently <span id="numPlayers">no</span> players.</p>
+		<!-- Check Players -->
+		<div id="playerNumber">
+			<p> There are currently <span id="numPlayers">no</span> players connected.</p>
+		</div>
+		<!-- Player info -->
 		<span id="myName"></span><span id="myRole"></span>
+		<!-- Party Info -->
 		<div id="party" hidden>
 			<h3>Party Members</h3>
 			<div id="playerList">
 
 			</div>
 		</div>
+
+
+		<!-- Initial Form -->
 		<form id='playerInformation' hidden>
 			Choose a nickname: <input id="playerName" name="playerName"></input><br>
 			Choose a class:
@@ -25,6 +34,7 @@
 			<button type="submit" value="submit">Go!</button>
 		</form>
 		<br>
+		<!-- Initial Class information -->
 		<div id="classInfo">
 			<div id="warriorInfo">
 				Warriors are known for having a high defense.
@@ -51,6 +61,38 @@
 				Stats: 20 HP, 18 MP, 2 STR, 2 DEX, 5 INT, 1 LUK
 			</div>
 		</div>
+		<!-- END OF INITIAL FORM -->
+
+
+
+		<div id="hostWait" hidden>
+			<button id="startGame">GO</button>
+		</div>
+
+		<div id="playerWait" hidden>
+			<p> Waiting for party leader to start the game </p>
+		</div>
+
+		<!-- BEGIN BATTLE -->
+		<div id="turns">
+		</div>
+		<div id="gameMessage">
+		</div>
+		<!-- Display monster info -->
+		<div id="monsterInfo" hidden>
+			<p>RAWR IM A SLIME</p>
+		</div>
+		<!-- Actions -->
+		<div id="actions" hidden>
+			<div >
+				<button id="attack">ATTACK</button>
+			</div>
+			<div id="skills">
+			</div>
+		</div>
+
+
+
 	</body>
 </html>
 

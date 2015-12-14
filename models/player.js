@@ -1,9 +1,11 @@
-function Player(name, role, leader, level, exp){
+function Player(name, role, socketId, level, exp, hp, mp){
 	this.name = name;
 	this.role = role;
-	this.leader = leader;
+	this.socketId = socketId;
 	this.level = level;
 	this.exp = exp;
+	this.hp = hp;
+	this.mp = mp;
 }
 
 //getters
@@ -22,3 +24,5 @@ Player.prototype.makeHost = function(){
 Player.prototype.removeHost = function(){
 	this.leader = false;
 }
+
+module.exports = Player;

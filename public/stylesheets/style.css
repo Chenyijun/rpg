@@ -4,9 +4,14 @@
 }
 
 body {
-	padding: 20px;
-  font-family: "xkcd", sans-serif;
+padding-left: 20px;
+padding-right: 20px;
+/*  font-family: "xkcd", sans-serif;
   font-size: 20px;
   color: #f83;
-  margin-top: 25px;
+  margin-top: 25px;*/
+}
+
+#playerNumber{
+	background-color: lightgray;
 }
