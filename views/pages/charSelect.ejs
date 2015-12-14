@@ -23,47 +23,98 @@
 		<!-- Initial Form -->
 		<form id='playerInformation' hidden>
 			Choose a nickname: <input id="playerName" name="playerName"></input><br>
-			Choose a class:
-			<span>
-				<input type="radio" value="warrior" name="playerClass">Warrior</input>
-				<input type="radio" value="archer" name="playerClass">Archer</input>
-				<input type="radio" value="thief" name="playerClass">Thief</input>
-				<input type="radio" value="mage" name="playerClass">Mage</input>
-				<input type="radio" value="cleric" name="playerClass">Cleric</input>
+			Choose a class: <br>
+			<div class="row">
+				<div class="card col s2">
+				    <div class="card-image waves-effect waves-block waves-light">
+				      <img class="activator" src="images/Class_swordman.png">
+				    </div>
+				    <div class="card-content">
+				      <span class="card-title activator grey-text text-darken-4">Warrior<i class="material-icons right">more_vert</i></span>
+				    </div>
+				    <div class="card-reveal">
+				      <span class="card-title grey-text text-darken-4">Warrior<i class="material-icons right">close</i></span>
+				      <p>Warriors are known for having a high defense. <br>Stats: 25 HP, 10 MP, 5 STR, 3 DEX, 1 INT, 1 LUK</p>
+				    </div>
+				</div>
+				<div class="card col s2">
+				    <div class="card-image waves-effect waves-block waves-light">
+				      <img class="activator" src="images/Class_archer.png">
+				    </div>
+				    <div class="card-content">
+				      <span class="card-title activator grey-text text-darken-4">Archer<i class="material-icons right">more_vert</i></span>
+				    </div>
+				    <div class="card-reveal">
+				      <span class="card-title grey-text text-darken-4">Archer<i class="material-icons right">close</i></span>
+				      <p>Archers do more damage than warriors but have lower defense.<br>Stats: 20 HP, 10 MP, 3 STR, 5 Dex, 1 INT, 1 LUK</p>
+				    </div>
+				</div>
+				<div class="card col s2">
+				    <div class="card-image waves-effect waves-block waves-light">
+				      <img class="activator" src="images/Class_thief.png">
+				    </div>
+				    <div class="card-content">
+				      <span class="card-title activator grey-text text-darken-4">Thief<i class="material-icons right">more_vert</i></span>
+				    </div>
+				    <div class="card-reveal">
+				      <span class="card-title grey-text text-darken-4">Thief<i class="material-icons right">close</i></span>
+				      <p>Thiefs have a higher chance to crit however they have low defense. <br>Stats: 18 HP, 10 MP, 3 STR, 3 DEX, 1 INT, 3 LUK</p>
+				    </div>
+				</div>
+				<div class="card col s2">
+				    <div class="card-image waves-effect waves-block waves-light">
+				      <img class="activator" src="images/Class_mage.png">
+				    </div>
+				    <div class="card-content">
+				      <span class="card-title activator grey-text text-darken-4">Mage<i class="material-icons right">more_vert</i></span>
+				    </div>
+				    <div class="card-reveal">
+				      <span class="card-title grey-text text-darken-4">Mage<i class="material-icons right">close</i></span>
+				      <p>Mages are equipped with a variety of spells. <br>Stats: 15 HP, 20 MP, 1 STR, 3 DEX, 5 INT, 1 LUK</p>
+				    </div>
+				</div>
+				<div class="card col s2">
+				    <div class="card-image waves-effect waves-block waves-light">
+				      <img class="activator" src="images/Class_acolyte.png">
+				    </div>
+				    <div class="card-content">
+				      <span class="card-title activator grey-text text-darken-4">Cleric<i class="material-icons right">more_vert</i></span>
+				    </div>
+				    <div class="card-reveal">
+				      <span class="card-title grey-text text-darken-4">Cleric<i class="material-icons right">close</i></span>
+				      <p>Clerics are the life of the party. <br> Stats: 20 HP, 18 MP, 2 STR, 2 DEX, 5 INT, 1 LUK</p>
+				    </div>
+				</div>
+		</div>
+			<span class = "row">
+				<p class="col s2">
+					<input type="radio" value="warrior" name="radio" id="warrior"/>
+					<label for="warrior">Warrior</label>
+				</p>
+				<p class="col s2">
+					<input type="radio" value="archer" name="radio" id="archer"/>
+					<label for="archer">Archer</label>
+				</p>
+				<p class="col s2">
+					<input type="radio" value="thief" name="radio" id="thief"/>
+					<label for="thief">Thief</label>
+				</p>
+				<p class="col s2">
+					<input type="radio" value="mage" name="radio" id="mage"/>
+					<label for="mage">Mage</label>
+				</p>
+				<p class="col s2">
+					<input type="radio" value="cleric" name="radio" id="cleric"/>
+					<label for="cleric">Cleric</label>
+				</p>
+<!-- 				<input type="radio" value="archer" name="radio">Archer</input>
+				<input type="radio" value="thief" name="radio">Thief</input>
+				<input type="radio" value="mage" name="radio">Mage</input>
+				<input type="radio" value="cleric" name="radio">Cleric</input> -->
 			</span><br>
 			<button type="submit" value="submit">Go!</button>
 		</form>
 		<br>
-		<!-- Initial Class information -->
-		<div id="classInfo">
-			<div id="warriorInfo">
-				Warriors are known for having a high defense.
-				Stats: 25 HP, 10 MP, 5 STR, 3 DEX, 1 INT, 1 LUK
-			</div>
-			<br>
-			<div id="archerInfo">
-				Archers do more damage than warriors but have lower defense.
-				Stats: 20 HP, 10 MP, 3 STR, 5 Dex, 1 INT, 1 LUK
-			</div>
-			<br>
-			<div id="thiefInfo">
-				Thiefs have a higher chance to crit however they have low defense.
-				Stats: 18 HP, 10 MP, 3 STR, 3 DEX, 1 INT, 3 LUK
-			</div>
-			<br>
-			<div id="mageInfo">
-				Mages are equipped with a variety of spells.
-				Stats: 15 HP, 20 MP, 1 STR, 3 DEX, 5 INT, 1 LUK
-			</div>
-			<br>
-			<div id="clericInfo">
-				Clerics are the life of the party.
-				Stats: 20 HP, 18 MP, 2 STR, 2 DEX, 5 INT, 1 LUK
-			</div>
-		</div>
-		<!-- END OF INITIAL FORM -->
-
-
 
 		<div id="hostWait" hidden>
 			<button id="startGame">GO</button>

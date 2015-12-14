@@ -13,8 +13,7 @@ $(document).ready(function(){
 		$('#playerInformation').slideDown().submit(function() {
 			console.log("submit Pressed");
 			myName = $('#playerName').val();
-			myRole = $('input[name=playerClass]:checked').val();
-			console.log(myRole);
+			myRole = $('input[name=radio]:checked').val();
 			$('#myName').text("I am " + myName);
 			$('#myRole').text(" the " + myRole);
 			socket.emit('choseClass',{name: myName, role: myRole});
