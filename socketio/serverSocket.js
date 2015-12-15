@@ -46,7 +46,7 @@ exports.init = function(io) {
 			socket.broadcast.emit('playerList', {playerList: players});
 
 			if(socket.id == hostId){
-				socket.emit('hostWait', {socketId: socket.id}); //send host the hostWait screen
+				socket.emit('hostWait', {socket: socket.id}); //send host the hostWait screen
 			}else{
 				socket.emit('playerWait', {socket: socket.id}); //send players the playerWait screen
 			}
@@ -63,6 +63,7 @@ exports.init = function(io) {
 				monster = monsters.fabre;
 				monster.hp = 10;
 			}
+			socket.broadcast.emit("gameStarted");
 			monster.role = "monster";
 			playerOrder = getPlayerOrder();
 			console.log(playerOrder);

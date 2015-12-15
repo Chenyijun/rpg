@@ -48,39 +48,22 @@ $(document).ready(function(){
 	});
 
 
-	//ON Player waiting for host to start game
+	//Player waiting for host to start game, view party list
 	socket.on("playerWait", function(data){
-		mySocket = data.socketId;
+		mySocket = data.socket;
 		console.log(mySocket);
 		console.log("Player wait");
 		$('#playerWait').fadeIn();
 	});
 
-	//ON Host View waiting to start game
+	//Host waiting to start game, view party list and button
 	socket.on("hostWait", function(data){
-		mySocket = data.socketId;
+		mySocket = data.socket;
 		console.log(mySocket);
 		host = true; 
 		$('#hostWait').fadeIn();
 	});
-
-	socket.on("hostEnd", function(data){
-		console.log(myName + " IS HOST");
-		$('#hostPlayAgain').fadeIn();
-		$("#playerList").empty();
-		for (var i = 0; i<data.playerOrder.length; i++){
-			if(data.playerOrder[i].role != "monster"){
-				if (data.playerOrder[i].name == myName){
-					$('#hp').text(data.playerOrder[i].hp);
-					$('#mp').text(data.playerOrder[i].mp);
-				}
-				$("#playerList").append("<li>"+data.playerOrder[i].name+ " ["+ data.playerOrder[i].role+"] HP: "+ data.playerOrder[i].hp+"</li>")
-			}
-		}
-		$('#actions').fadeOut();
-		$('#gameMessage').text(data.message);
-	});
-
+	//when monster is killed
 	socket.on("gameFinish", function(data){
 		console.log("GAME IS DONE");
 		$("#playerList").empty();
@@ -95,22 +78,26 @@ $(document).ready(function(){
 		}
 		$('#partyTurn').text="Party Members";
 		$('#actions').fadeOut();
-		$('#gameMessage').text(data.message);
+		$('#gameMessage').text("Congrats! you have defeated the monster!");
 		//if not host
 		if (host==true){
 			$('#hostPlayAgain').fadeIn();
+			// $('#gameMessage').text("");
 		}else{
-			$('#playerWait').fadeIn();	
+			$('#playerWait').fadeIn();
+			// $('#gameMessage').text("");	
 		}
 
 	});
-
+	//when game starts
 	socket.on("gameStarted", function(data){
+		$('#gameMessage').text("");
 		$('#playerWait').fadeOut();
 		$('#partyTurn').text("Turns");
 	});
 
 	socket.on("updateGameInfo", function(data){
+		$('#actions').fadeOut();
 		console.log('updategameInfo');
 		$("#playerList").empty();
 		for (var i = 0; i<data.playerOrder.length; i++){
@@ -126,16 +113,17 @@ $(document).ready(function(){
 		$('#mp').text(data.mp);
 		console.log(data.help);
 	});
-
+	//Attack/Skill option
 	socket.on("chooseAction", function(data){
-		debugger;
-		// $('#gameMessage').text("Your turn");
-		console.log("YOUR TURN");
-		$('#actions').fadeIn();
-		$('#attack').click(function(){
-			socket.emit('makeAction');
-			$('#actions').fadeOut();
-		});
+		console.log(mySocket);
+		if (data.socket == mySocket){
+			console.log("YOUR TURN");
+			$('#actions').fadeIn();
+			$('#attack').click(function(){
+				socket.emit('makeAction');
+				$('#actions').fadeOut();
+			});
+		}
 	});
 
 	//Host presses start game 
@@ -147,6 +135,7 @@ $(document).ready(function(){
 	});
 
 	$('#playAgain').click(function(){
+		$('#gameMessage').text("");
 		$('#hostWait').fadeOut();
 		$('#hostPlayAgain').fadeOut();
 		socket.emit('startGame');
