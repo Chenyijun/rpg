@@ -79,14 +79,15 @@ $(document).ready(function(){
 		$('#partyTurn').text="Party Members";
 		$('#actions').fadeOut();
 		$('#gameMessage').text("Congrats! you have defeated the monster!");
-		//if not host
-		if (host==true){
-			$('#hostPlayAgain').fadeIn();
-			// $('#gameMessage').text("");
-		}else{
-			$('#playerWait').fadeIn();
-			// $('#gameMessage').text("");	
-		}
+		//Play again
+		// //if not host
+		// if (host==true){
+		// 	$('#hostPlayAgain').fadeIn();
+		// 	// $('#gameMessage').text("");
+		// }else{
+		// 	$('#playerWait').fadeIn();
+		// 	// $('#gameMessage').text("");	
+		// }
 
 	});
 	//when game starts
@@ -124,6 +125,10 @@ $(document).ready(function(){
 				$('#actions').fadeOut();
 			});
 		}
+	});
+
+	socket.on('dead', function(data){
+		$('#gameMessage').text("You died.");
 	});
 
 	//Host presses start game 

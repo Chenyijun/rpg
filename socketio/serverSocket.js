@@ -89,16 +89,9 @@ exports.init = function(io) {
 			var damageDone = calculateDamage(currentTurn.role);
 			//if damage is enough to kill monster
 			if (damageDone >= monster.hp){ 
-				message = "Monster is dead. Congrats!";
-				console.log("MONSTER IS DEAD");
+				message = "Monster is dead. Congrats!"; 
 				//remove monster from player order
-				for (var i =0; i < playerOrder.length; i++)
-				   if (playerOrder[i].role === "monster") {
-				      playerOrder.splice(i,1);
-				      break;
-				 }
-				console.log("Host id " + hostId);
-				io.sockets.connected[hostId].emit("HostEnd");
+				removeMonsterfromOrder()
 				socket.broadcast.emit('gameFinish', {playerOrder: playerOrder, monster:monster, message: message, help: "makeAction"});
 				socket.emit('gameFinish', {playerOrder: playerOrder, monster:monster, message: message, help: "makeActionEMIT"});
 			}else{
@@ -111,7 +104,18 @@ exports.init = function(io) {
 				nextTurn(); 
 				//if monster's turn
 				if (currentTurn == "monster"){
-					message += " " + monsterTurn();
+					var target = monsterTarget();
+					var damage = monsterDamage();
+					if(players[target].hp < damage){ 
+						//if monster kills someone
+						console.log(players[target].name + "is dead");
+						var deadSocket = removePlayerfromOrder(players[target].name);
+						io.sockets.connected[deadSocket].emit("dead")
+					}else{
+						players[target].hp = players[target].hp - damage;
+						console.log("Dealt " + damage + " to " + players[target].name);
+						message = "Monster dealt " + damage + "dmg to " + players[target].name;
+					}
 					socket.broadcast.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "MonsterTurn"});
 					socket.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "MonsterTurnEMIT"});
 					//move onto next turn
@@ -129,25 +133,9 @@ exports.init = function(io) {
 			}
 		});
 
-		socket.on("continueGame", function(data){
-
-		});
-
 		function nextTurn(){
 			playerOrder.push(playerOrder.shift());
 			getCurrentPlayer();
-		}
-
-		function monsterTurn(){
-			var target = monsterTarget();
-			var damage = monsterDamage();
-			if(players[target].hp < damage){
-				return console.log(players[target].name + "is dead");
-			}else{
-				players[target].hp = players[target].hp - damage;
-				console.log("Dealt " + damage + " to " + players[target].name);
-				return "Monster dealt " + damage + " to " + players[target].name;
-			}
 		}
 
 		function monsterDamage(){
@@ -228,6 +216,27 @@ exports.init = function(io) {
 			}
 			return false;
 		}
+
+		function removeMonsterfromOrder(){
+			for (var i =0; i < playerOrder.length; i++){
+			   if (playerOrder[i].role === "monster") {
+			      playerOrder.splice(i,1);
+			      break;
+			     }
+			}
+		}
+
+		function removePlayerfromOrder(name){
+			for (var i =0; i < playerOrder.length; i++){
+			   if (playerOrder[i].name === "name") {
+			   	  var socket = playerOrder[i].socketId
+			      playerOrder.splice(i,1);
+			      return socket;
+			     }
+			}
+		}
+
+
 		/*
 		 * Upon this connection disconnecting (sending a disconnect event)
 		 * decrement the number of players and emit an event to all other
