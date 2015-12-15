@@ -5,14 +5,12 @@ $(document).ready(function(){
 	var socket = io.connect();
 	var mySocket = null;
 	socket.on('players', function (data) {
-		console.log(data);
 		$("#numPlayers").text(data.number);
 	});
 
 	socket.on('newPlayer', function(data){
 		$('#classInfo').slideDown();
 		$('#playerInformation').slideDown().submit(function() {
-			console.log("submit Pressed");
 			myName = $('#playerName').val();
 			myRole = $('input[name=radio]:checked').val();
 			$('#myName').text(myName);
@@ -34,8 +32,6 @@ $(document).ready(function(){
 
 	socket.on('playerList', function(data){
 		$('#party').slideDown();
-		console.log("UpdatePlayers");
-		console.log(data);
 		players = []
 		$("#playerList").empty();
 		for (i=0; i<data.playerList.length; i++){
@@ -43,7 +39,6 @@ $(document).ready(function(){
 			players.push(player);
 			$("#playerList").append("<li>"+player+ "</li>");
 		}
-		console.log(players);
 		// $("#playerList").text(players);
 	});
 
@@ -51,15 +46,12 @@ $(document).ready(function(){
 	//Player waiting for host to start game, view party list
 	socket.on("playerWait", function(data){
 		mySocket = data.socket;
-		console.log(mySocket);
-		console.log("Player wait");
 		$('#playerWait').fadeIn();
 	});
 
 	//Host waiting to start game, view party list and button
 	socket.on("hostWait", function(data){
 		mySocket = data.socket;
-		console.log(mySocket);
 		host = true; 
 		$('#hostWait').fadeIn();
 	});
@@ -99,7 +91,6 @@ $(document).ready(function(){
 
 	socket.on("updateGameInfo", function(data){
 		$('#actions').fadeOut();
-		console.log('updategameInfo');
 		$("#playerList").empty();
 		for (var i = 0; i<data.playerOrder.length; i++){
 			if (data.playerOrder[i].name == myName){
@@ -112,11 +103,9 @@ $(document).ready(function(){
 		$('#gameMessage').text(data.message);
 		$('#hp').text(data.hp);
 		$('#mp').text(data.mp);
-		console.log(data.help);
 	});
 	//Attack/Skill option
 	socket.on("chooseAction", function(data){
-		console.log(mySocket);
 		if (data.socket == mySocket){
 			console.log("YOUR TURN");
 			$('#actions').fadeIn();

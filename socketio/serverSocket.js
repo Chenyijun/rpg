@@ -27,11 +27,8 @@ exports.init = function(io) {
 
 
 		socket.on("choseClass", function(data){
-			console.log("Chose Class");
-			console.log(data);
 			if (players.length == 0){
 				hostId = socket.id;
-				console.log("im the host");
 			}
 			// players.push({name: data.name, role: data.role, socket: socket.id, level: 1, exp: 0});
 			var roleInfo = library.getRoleInfo(data.role);
@@ -39,8 +36,6 @@ exports.init = function(io) {
 			if (!checkAlreadyExists(socket.id)){
 				players.push(newPlayer);
 			}
-			console.log(players);
-			console.log(newPlayer);
 			socket.emit('hpMp', {hp: newPlayer.hp, mp: newPlayer.mp});
 			socket.emit('playerList', {playerList: players});
 			socket.broadcast.emit('playerList', {playerList: players});
@@ -66,7 +61,6 @@ exports.init = function(io) {
 			socket.broadcast.emit("gameStarted");
 			monster.role = "monster";
 			playerOrder = getPlayerOrder();
-			console.log(playerOrder);
 			getCurrentPlayer()
 			socket.broadcast.emit('updateGameInfo', {playerOrder: playerOrder, monster: monster})
 			socket.emit('updateGameInfo', {playerOrder: playerOrder, monster: monster, message: message})
@@ -111,21 +105,17 @@ exports.init = function(io) {
 						io.sockets.connected[deadSocket].emit("dead")
 					}else{
 						players[target].hp = players[target].hp - damage;
-						console.log("Dealt " + damage + " to " + players[target].name);
 						message =  monster.name + " dealt " + damage + " damage to " + players[target].name+". ";
 					}
 					socket.broadcast.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "MonsterTurn"});
 					socket.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "MonsterTurnEMIT"});
 					//move onto next turn
 					nextTurn();
-					console.log(currentTurn.socketId);
 					io.sockets.connected[currentTurn.socketId].emit("chooseAction", {socket: currentTurn.socketId})
 				}else{
 					//let next person go
-					console.log("currentMessage"+ message);
 					socket.broadcast.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "NextPerson"});
 					socket.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "NextPersonEMIT"});
-					console.log(currentTurn.socketId);
 					io.sockets.connected[currentTurn.socketId].emit("chooseAction", {socket: currentTurn.socketId})
 				}
 			}
@@ -164,10 +154,8 @@ exports.init = function(io) {
 		}
 
 		function calculateHitChance(dex){
-			var hitChance = dex/5 * 100 + 20;
+			var hitChance = 80+(dex*2);
 			var rand = getRandomInt(0, 100);
-			console.log("Hit chance " + hitChance);
-			console.log("rand " + rand);
 			if(rand <= hitChance){
 				return true;
 			}else{
