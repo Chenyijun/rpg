@@ -5,6 +5,14 @@ var monsterList = [];;
 exports.getRoleInfo = function(name){
 	if(name == "warrior"){
 		return roles.warrior
+	}else if(name == "archer"){
+		return roles.archer
+	}else if(name == "thief"){
+		return roles.thief
+	}else if(name == "mage"){
+		return roles.mage
+	}else{
+		return roles.cleric
 	}
 }
 
@@ -31,7 +39,7 @@ exports.parseMonsters = function(){
 }
 
 exports.loadJSON = function(fs) {
-	var jsonName = "classes.json";
+	var jsonName = "library.json";
 	fs.readFile(jsonName, function(err, data) {
 		if(err) {
 			console.log(err);

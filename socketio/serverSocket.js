@@ -29,37 +29,54 @@ exports.init = function(io) {
 		socket.on("choseClass", function(data){
 			console.log("Chose Class");
 			console.log(data);
-			if (currentPlayers == 1){
+			if (players.length == 0){
 				hostId = socket.id;
 				console.log("im the host");
 			}
 			// players.push({name: data.name, role: data.role, socket: socket.id, level: 1, exp: 0});
 			var roleInfo = library.getRoleInfo(data.role);
-			players.push(new player(data.name, data.role, socket.id, 1, 0, roleInfo.stats.hp, roleInfo.stats.mp));
+			var newPlayer = new player(data.name, data.role, socket.id, 1, 0, roleInfo.stats.hp, roleInfo.stats.mp)
+			if (!checkAlreadyExists(socket.id)){
+				players.push(newPlayer);
+			}
 			console.log(players);
+			console.log(newPlayer);
+			socket.emit('hpMp', {hp: newPlayer.hp, mp: newPlayer.mp});
 			socket.emit('playerList', {playerList: players});
 			socket.broadcast.emit('playerList', {playerList: players});
 
 			if(socket.id == hostId){
-				socket.emit('hostWait'); //send host the hostWait screen
+				socket.emit('hostWait', {socketId: socket.id}); //send host the hostWait screen
 			}else{
-				socket.emit('playerWait'); //send players the playerWait screen
+				socket.emit('playerWait', {socket: socket.id}); //send players the playerWait screen
 			}
 		});	
 
 		socket.on("startGame", function(data){
+			// socket.broadcast.emit('gameStarted', {playerOrder: playerOrder, monster: monster})
 			var monsters = library.getAllMonsters();
-			monster = monsters.fabre;
+			var rand = getRandomInt(0,2);
+			if(rand==1){
+				monster = monsters.poring;
+				monster.hp = 15;
+			}else{
+				monster = monsters.fabre;
+				monster.hp = 10;
+			}
 			monster.role = "monster";
 			playerOrder = getPlayerOrder();
 			console.log(playerOrder);
-			socket.broadcast.emit('startGame', {playerOrder: playerOrder, monster: monster})
-			socket.emit('startGame', {playerOrder: playerOrder, monster: monster, message: message})
 			getCurrentPlayer()
+			socket.broadcast.emit('updateGameInfo', {playerOrder: playerOrder, monster: monster})
+			socket.emit('updateGameInfo', {playerOrder: playerOrder, monster: monster, message: message})
 			if (currentTurn == "monster"){
-				console.log("MONSTERRRR");
+				message += " " + monsterTurn();
+					socket.broadcast.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "startGame"});
+					socket.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "startGameEMIT"});
+					nextTurn();
+					io.sockets.connected[currentTurn.socketId].emit("chooseAction", {socket: currentTurn.socketId})
 			}else{
-				io.sockets.connected[currentTurn.socketId].emit("chooseAction")
+				io.sockets.connected[currentTurn.socketId].emit("chooseAction", {socket: currentTurn.socketId})
 			}
 			//load monster
 			//broadcast whose turn
@@ -67,39 +84,52 @@ exports.init = function(io) {
 
 		socket.on("makeAction", function(data){
 			var message = "";
-			console.log("current turn " + currentTurn)
+			//calculate damage
 			var damageDone = calculateDamage(currentTurn.role);
-			if (damageDone > monster.hp){
+			//if damage is enough to kill monster
+			if (damageDone >= monster.hp){ 
 				message = "Monster is dead. Congrats!";
 				console.log("MONSTER IS DEAD");
-				socket.broadcast.emit('gameFinish', {playerOrder: playerOrder, monster:monster, message: message});
-				socket.emit('gameFinish', {playerOrder: playerOrder, monster:monster, message: message});
+				//remove monster from player order
+				for (var i =0; i < playerOrder.length; i++)
+				   if (playerOrder[i].role === "monster") {
+				      playerOrder.splice(i,1);
+				      break;
+				 }
+				console.log("Host id " + hostId);
+				io.sockets.connected[hostId].emit("HostEnd");
+				socket.broadcast.emit('gameFinish', {playerOrder: playerOrder, monster:monster, message: message, help: "makeAction"});
+				socket.emit('gameFinish', {playerOrder: playerOrder, monster:monster, message: message, help: "makeActionEMIT"});
 			}else{
+				//subtract damage from monster's HP
 				console.log("Dealt " + damageDone);
 				monster.hp = monster.hp - damageDone;
-				console.log("monster hp " + monster.hp);
+				console.log(" monster hp " + monster.hp);
 				message = currentTurn.name + " dealt "+ damageDone + "damage";
+				//change order
+				nextTurn(); 
+				//if monster's turn
+				if (currentTurn == "monster"){
+					message += " " + monsterTurn();
+					socket.broadcast.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "MonsterTurn"});
+					socket.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "MonsterTurnEMIT"});
+					//move onto next turn
+					nextTurn();
+					console.log(currentTurn.socketId);
+					io.sockets.connected[currentTurn.socketId].emit("chooseAction", {socket: currentTurn.socketId})
+				}else{
+					//let next person go
+					console.log("currentMessage"+ message);
+					socket.broadcast.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "NextPerson"});
+					socket.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "NextPersonEMIT"});
+					console.log(currentTurn.socketId);
+					io.sockets.connected[currentTurn.socketId].emit("chooseAction", {socket: currentTurn.socketId})
+				}
 			}
-			socket.broadcast.emit('startGame', {playerOrder: playerOrder, monster:monster, message: message});
-			socket.emit('startGame', {playerOrder: playerOrder, monster:monster, message: message});
-			nextTurn();
-			if (currentTurn == "monster"){
-				console.log("monster turn");
-				message += monsterTurn();
-				console.log("next Turn");
-				nextTurn();
-				socket.broadcast.emit('startGame', {playerOrder: playerOrder, monster:monster, message: message});
-				socket.emit('startGame', {playerOrder: playerOrder, monster:monster, message: message});
-				io.sockets.connected[currentTurn.socketId].emit("chooseAction")
-			}else{
-				io.sockets.connected[currentTurn.socketId].emit("chooseAction")
-			}
+		});
 
-			//calculate damage
-			//check if monster is dead
-			//show that damage has been taken
-			//broadcast to everyone
-			//go to next person in line
+		socket.on("continueGame", function(data){
+
 		});
 
 		function nextTurn(){
@@ -115,7 +145,6 @@ exports.init = function(io) {
 			}else{
 				players[target].hp = players[target].hp - damage;
 				console.log("Dealt " + damage + " to " + players[target].name);
-				console.log(players[target].name + " hp:" + players[target].hp);
 				return "Monster dealt " + damage + " to " + players[target].name;
 			}
 		}
@@ -134,7 +163,6 @@ exports.init = function(io) {
 		}
 
 		function calculateDamage(role){
-			console.log("role " + role)
 			var roleInfo = library.getRoleInfo(role);
 			var hitChance = calculateHitChance(roleInfo.stats.dex)
 			if (hitChance == false){
@@ -189,6 +217,15 @@ exports.init = function(io) {
 			}else{
 				currentTurn = playerOrder[0];
 			}
+		}
+
+		function checkAlreadyExists(socket){
+			for(var i=0; i<players.length-1; i++){
+				if(players[i].socketId == socket){
+					return true;
+				}
+			}
+			return false;
 		}
 		/*
 		 * Upon this connection disconnecting (sending a disconnect event)

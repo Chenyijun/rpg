@@ -10,12 +10,14 @@
 			<p> There are currently <span id="numPlayers">no</span> players connected.</p>
 		</div>
 		<!-- Player info -->
-		<span id="myName"></span><span id="myRole"></span>
-		<!-- Party Info -->
-		<div id="party" hidden>
-			<h3>Party Members</h3>
-			<div id="playerList">
+		<div id= "playerInfo" hidden>
+			<span id="myName"></span> [<span id="myRole"></span>] HP:<span id="hp"></span> MP:<span id="mp"></span> 
+			<!-- Party Info -->
+			<div id="party" hidden>
+				<p><div id="partyTurn">Party Members</div></p>
+				<ul id="playerList" class = "collection">
 
+				</ul>
 			</div>
 		</div>
 
@@ -107,22 +109,10 @@
 					<input type="radio" value="cleric" name="radio" id="cleric"/>
 					<label for="cleric">Cleric</label>
 				</p>
-<!-- 				<input type="radio" value="archer" name="radio">Archer</input>
-				<input type="radio" value="thief" name="radio">Thief</input>
-				<input type="radio" value="mage" name="radio">Mage</input>
-				<input type="radio" value="cleric" name="radio">Cleric</input> -->
 			</span><br>
 			<button type="submit" value="submit">Go!</button>
 		</form>
 		<br>
-
-		<div id="hostWait" hidden>
-			<button id="startGame">GO</button>
-		</div>
-
-		<div id="playerWait" hidden>
-			<p> Waiting for party leader to start the game </p>
-		</div>
 
 		<!-- BEGIN BATTLE -->
 		<div id="turns">
@@ -136,10 +126,23 @@
 		<!-- Actions -->
 		<div id="actions" hidden>
 			<div >
-				<button id="attack">ATTACK</button>
+				<button id="attack">ATTACK </button>
 			</div>
 			<div id="skills">
 			</div>
+		</div>
+
+		<!-- Lobby -->
+		<div id="hostWait" hidden>
+			<button id="startGame">Start Game </button>
+		</div>
+
+		<div id="hostPlayAgain" hidden>
+			<button id="playAgain">Play Again </button>
+		</div>
+
+		<div id="playerWait" hidden>
+			<p> Waiting for party leader to start the game </p>
 		</div>
 
 

@@ -14,7 +14,7 @@ exports.init = function(app) {
 
 // No path:  display instructions for use
 index = function(req, res) {
-  res.render('pages/charSelect', {title: 'Login'})
+  res.render('pages/charSelect', {title: 'RPG'})
 };
 
 home = function(req, res) {
@@ -62,7 +62,7 @@ doCreate = function(req, res){
 		                  function(result) {
 		                    // result equal to true means create was successful
   		                  var success = (result ? "Create successful" : "Create unsuccessful");
-	  	                  res.render('message', {title: 'Mongo Demo', obj: success});
+	  	                  res.render('pages/message', {title: 'Mongo Demo', obj: success});
      		                console.log("2. Done with callback in dbRoutes create");
 		                  });
   console.log("3. Done with doCreate in dbRoutes");
@@ -111,7 +111,7 @@ doUpdate = function(req, res){
   var filter = req.body.find ? JSON.parse(req.body.find) : {};
   // if there no update operation defined, render an error page.
   if (!req.body.update) {
-    res.render('message', {title: 'Mongo Demo', obj: "No update operation defined"});
+    res.render('pages/message', {title: 'Mongo Demo', obj: "No update operation defined"});
     return;
   }
   var update = JSON.parse(req.body.update);
@@ -129,7 +129,7 @@ doUpdate = function(req, res){
    */
   mongoModel.update(  req.params.collection, filter, update,
 		                  function(status) {
-              				  res.render('message',{title: 'Mongo Demo', obj: status});
+              				  res.render('pages/message',{title: 'Mongo Demo', obj: status});
 		                  });
 }
 
@@ -153,7 +153,7 @@ doDelete = function(req, res){
     remove,
     justOne,
     function(status) {
-      res.render('message',{title: 'Mongo Demo', obj: status});
+      res.render('pages/message',{title: 'Mongo Demo', obj: status});
     });
 }
 
