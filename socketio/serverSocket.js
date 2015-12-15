@@ -96,10 +96,8 @@ exports.init = function(io) {
 				socket.emit('gameFinish', {playerOrder: playerOrder, monster:monster, message: message, help: "makeActionEMIT"});
 			}else{
 				//subtract damage from monster's HP
-				console.log("Dealt " + damageDone);
 				monster.hp = monster.hp - damageDone;
-				console.log(" monster hp " + monster.hp);
-				message = currentTurn.name + " dealt "+ damageDone + "damage";
+				message = currentTurn.name + " dealt "+ damageDone + " damage. ";
 				//change order
 				nextTurn(); 
 				//if monster's turn
@@ -114,7 +112,7 @@ exports.init = function(io) {
 					}else{
 						players[target].hp = players[target].hp - damage;
 						console.log("Dealt " + damage + " to " + players[target].name);
-						message = "Monster dealt " + damage + "dmg to " + players[target].name;
+						message =  monster.name + " dealt " + damage + " damage to " + players[target].name+". ";
 					}
 					socket.broadcast.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "MonsterTurn"});
 					socket.emit('updateGameInfo', {playerOrder: playerOrder, monster:monster, message: message, help: "MonsterTurnEMIT"});

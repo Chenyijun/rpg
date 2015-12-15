@@ -78,7 +78,7 @@ $(document).ready(function(){
 		}
 		$('#partyTurn').text="Party Members";
 		$('#actions').fadeOut();
-		$('#gameMessage').text("Congrats! you have defeated the monster!");
+		$('#gameMessage').text("Congrats! You have defeated the monster!");
 		//Play again
 		// //if not host
 		// if (host==true){
