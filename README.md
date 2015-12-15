@@ -7,6 +7,7 @@ Simple RPG is a multiplayer game where you can team up with friends to defeat mo
 
 Simple RPG uses mainly Node.js, Socket.io, and Materialize-CSS.
 Class and monster information are stored in the json file "library."
+
 ---
 ###Credits
 All images and monsters are from Ragnarok Online. They belong to GRAVITY CO.
